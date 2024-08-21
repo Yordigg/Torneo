@@ -1,0 +1,103 @@
+/* Estilos generales para el bracket */
+body {
+    font-family: 'Orbitron', sans-serif;
+    background-color: #0a0a0a;
+    color: #d1d1d1;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start; /* Alinear hacia arriba */
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.container {
+    text-align: center;
+    width: 100%;
+    max-width: 1600px; /* Más ancho para acomodar mejor el bracket */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+header {
+    margin-bottom: 30px;
+}
+
+h1 {
+    color: #00BFFF;
+    font-size: 4em;
+    text-shadow: 0 0 20px #00BFFF, 0 0 30px #1E90FF, 0 0 40px #4682B4;
+}
+
+.glow {
+    animation: glowAnimation 2s ease-in-out infinite alternate;
+}
+
+@keyframes glowAnimation {
+    from {
+        text-shadow: 0 0 10px #00BFFF, 0 0 20px #1E90FF, 0 0 30px #4682B4;
+    }
+    to {
+        text-shadow: 0 0 20px #00BFFF, 0 0 30px #1E90FF, 0 0 40px #4682B4;
+    }
+}
+
+/* Estilos para el bracket */
+#bracket-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Alinear hacia arriba */
+    width: 100%;
+    padding: 20px;
+    background-color: #0a0a0a; /* Fondo oscuro */
+    box-sizing: border-box;
+    overflow-x: auto; /* Permitir scroll horizontal si es necesario */
+}
+
+.round {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Alinear partidas hacia arriba */
+    margin: 0 40px; /* Ajuste de margen entre rondas */
+    flex: 1;
+}
+
+.match {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Alinear hacia arriba */
+    align-items: center;
+    margin: 20px 0; /* Ajuste de margen entre partidos */
+    padding: 10px 0;
+}
+
+.match .player {
+    background: #000000;
+    color: #ffffff;
+    padding: 10px 30px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 2px solid #00BFFF;
+    width: 150px;
+    text-align: center;
+    box-shadow: 0 0 10px #00BFFF;
+    position: relative;
+    cursor: pointer;
+}
+
+.match .vs {
+    color: #00BFFF;
+    font-size: 1.5em;
+    margin: 10px 0;
+    text-shadow: 0 0 10px #00BFFF;
+}
+
+.match .match-label {
+    color: #00BFFF;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px #00BFFF;
+    font-weight: bold;
+}
