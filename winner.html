@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ganador - Yordi_gg Stars Cup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="winner-title" class="glow">¡Felicidades, <span id="winner-name"></span>!</h1>
+        <p id="winner-message">Eres el campeón de Yordi_gg Stars Cup 🎉</p>
+    </div>
+    <script>
+        const winnerName = localStorage.getItem('tournamentWinner');
+        if (winnerName) {
+            document.getElementById('winner-name').textContent = winnerName;
+            document.getElementById('winner-title').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
