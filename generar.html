@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yordi_gg Stars Cup - Bracket</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="bracket.css">
 </head>
 <body>
@@ -14,8 +15,96 @@
         </header>
         <section id="bracket-container">
             <!-- El bracket se generará aquí -->
+            <div class="bracket-controls">
+                <button class="zoom-button" onclick="zoomBracket('in')">
+                    <i class="fas fa-search-plus"></i>
+                </button>
+                <button class="zoom-button" onclick="zoomBracket('out')">
+                    <i class="fas fa-search-minus"></i>
+                </button>
+                <button class="zoom-button" onclick="zoomBracket('reset')">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+            <div class="scroll-indicator">Desplázate para ver más →</div>
         </section>
     </div>
     <script src="bracket.js"></script>
+    <script>
+    // Crear partículas
+    function createParticles() {
+        const particlesContainer = document.createElement('div');
+        particlesContainer.className = 'particles';
+        document.body.appendChild(particlesContainer);
+
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            particle.style.left = `${Math.random() * 100}%`;
+            
+            const size = Math.random() * 3 + 1;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            const duration = Math.random() * 10 + 15;
+            const delay = Math.random() * -20;
+            particle.style.animation = `particleFloat ${duration}s ${delay}s infinite linear`;
+            
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    // Control de zoom
+    let currentZoom = 1;
+    const MIN_ZOOM = 0.5;
+    const MAX_ZOOM = 1.5;
+    const ZOOM_STEP = 0.1;
+
+    function zoomBracket(action) {
+        const bracketWrapper = document.querySelector('.bracket-wrapper');
+        
+        switch(action) {
+            case 'in':
+                if (currentZoom < MAX_ZOOM) {
+                    currentZoom += ZOOM_STEP;
+                }
+                break;
+            case 'out':
+                if (currentZoom > MIN_ZOOM) {
+                    currentZoom -= ZOOM_STEP;
+                }
+                break;
+            case 'reset':
+                currentZoom = 1;
+                break;
+        }
+        
+        bracketWrapper.style.transform = `scale(${currentZoom})`;
+    }
+
+    // Mostrar/ocultar indicador de scroll
+    function updateScrollIndicator() {
+        const container = document.getElementById('bracket-container');
+        const indicator = document.querySelector('.scroll-indicator');
+        
+        if (container.scrollWidth > container.clientWidth) {
+            indicator.style.opacity = '1';
+            setTimeout(() => {
+                indicator.style.opacity = '0';
+            }, 3000);
+        } else {
+            indicator.style.opacity = '0';
+        }
+    }
+
+    // Inicializar
+    window.addEventListener('DOMContentLoaded', () => {
+        createParticles();
+        updateScrollIndicator();
+    });
+
+    window.addEventListener('resize', updateScrollIndicator);
+    </script>
 </body>
 </html>
