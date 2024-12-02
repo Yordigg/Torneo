@@ -3,21 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ganador - Yordi_gg Stars Cup</title>
+    <title>¡Campeón! - Yordi_gg Stars Cup</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="winner.css">
 </head>
 <body>
     <div class="container">
-        <h1 id="winner-title" class="glow">¡Felicidades, <span id="winner-name"></span>!</h1>
-        <p id="winner-message">Eres el campeón de Yordi_gg Stars Cup 🎉</p>
+        <div class="champion-container">
+            <div class="crown">
+                <i class="fas fa-crown"></i>
+            </div>
+            <h1 class="champion-title">
+                ¡Campeón!
+                <span class="champion-name" id="winner-name"></span>
+            </h1>
+            <div class="trophy-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <p class="winner-message">¡Has conquistado la Yordi_gg Stars Cup! 🎉</p>
+            <button class="return-button" onclick="window.location.href='index.html'">
+                Volver al Inicio
+            </button>
+        </div>
     </div>
+
     <script>
+    // Crear partículas
+    function createParticles() {
+        const particlesContainer = document.createElement('div');
+        particlesContainer.className = 'particles';
+        document.body.appendChild(particlesContainer);
+
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            particle.style.left = `${Math.random() * 100}%`;
+            
+            const size = Math.random() * 3 + 1;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            const duration = Math.random() * 10 + 15;
+            const delay = Math.random() * -20;
+            particle.style.animation = `particleFloat ${duration}s ${delay}s infinite linear`;
+            
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    // Crear confeti
+    function createConfetti() {
+        const colors = ['#4286f4', '#2d5bb9', '#gold', '#00ff00'];
+        const confettiCount = 100;
+
+        for (let i = 0; i < confettiCount; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti-piece';
+            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.left = `${Math.random() * 100}%`;
+            confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+            confetti.style.animation = `confettiFall ${Math.random() * 3 + 2}s linear infinite`;
+            document.body.appendChild(confetti);
+        }
+    }
+
+    // Mostrar nombre del ganador con efecto
+    function showWinner() {
         const winnerName = localStorage.getItem('tournamentWinner');
         if (winnerName) {
-            document.getElementById('winner-name').textContent = winnerName;
-            document.getElementById('winner-title').style.display = 'block';
+            const winnerElement = document.getElementById('winner-name');
+            winnerElement.textContent = winnerName;
+            winnerElement.style.display = 'block';
         }
+    }
+
+    // Inicializar efectos
+    window.addEventListener('DOMContentLoaded', () => {
+        createParticles();
+        createConfetti();
+        showWinner();
+    });
     </script>
 </body>
 </html>
