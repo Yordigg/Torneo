@@ -1,21 +1,43 @@
 /* Estilos generales para el bracket */
 body {
     font-family: 'Orbitron', sans-serif;
-    background-color: #0a0a0a;
+    background: linear-gradient(45deg, #000000, #111111);
     color: #d1d1d1;
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: flex-start; /* Alinear hacia arriba */
+    justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
     flex-direction: column;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 10% 10%, rgba(66, 134, 244, 0.03) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(66, 134, 244, 0.03) 0%, transparent 40%),
+        linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.8) 100%);
+    animation: gradientMove 15s ease infinite;
+    z-index: -1;
+}
+
+@keyframes gradientMove {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
 }
 
 .container {
     text-align: center;
     width: 100%;
-    max-width: 1600px; /* Más ancho para acomodar mejor el bracket */
+    max-width: 1600px;
     padding: 20px;
     box-sizing: border-box;
 }
@@ -24,80 +46,362 @@ header {
     margin-bottom: 30px;
 }
 
-h1 {
-    color: #00BFFF;
+h1.glow {
+    color: #4286f4;
     font-size: 4em;
-    text-shadow: 0 0 20px #00BFFF, 0 0 30px #1E90FF, 0 0 40px #4682B4;
+    text-transform: uppercase;
+    text-shadow: 
+        0 0 10px rgba(66, 134, 244, 0.5),
+        0 0 20px rgba(66, 134, 244, 0.3),
+        0 0 30px rgba(66, 134, 244, 0.2);
+    animation: titlePulse 2s ease-in-out infinite alternate;
 }
 
-.glow {
-    animation: glowAnimation 2s ease-in-out infinite alternate;
-}
-
-@keyframes glowAnimation {
+@keyframes titlePulse {
     from {
-        text-shadow: 0 0 10px #00BFFF, 0 0 20px #1E90FF, 0 0 30px #4682B4;
+        text-shadow: 
+            0 0 10px rgba(66, 134, 244, 0.5),
+            0 0 20px rgba(66, 134, 244, 0.3),
+            0 0 30px rgba(66, 134, 244, 0.2);
     }
     to {
-        text-shadow: 0 0 20px #00BFFF, 0 0 30px #1E90FF, 0 0 40px #4682B4;
+        text-shadow: 
+            0 0 15px rgba(66, 134, 244, 0.6),
+            0 0 25px rgba(66, 134, 244, 0.4),
+            0 0 35px rgba(66, 134, 244, 0.3);
     }
 }
 
 /* Estilos para el bracket */
 #bracket-container {
     display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Alinear hacia arriba */
+    justify-content: flex-start;
+    align-items: flex-start;
     width: 100%;
-    padding: 20px;
-    background-color: #0a0a0a; /* Fondo oscuro */
+    padding: 40px 20px;
+    background: rgba(10, 10, 10, 0.7);
     box-sizing: border-box;
-    overflow-x: auto; /* Permitir scroll horizontal si es necesario */
+    overflow: auto;
+    min-height: 80vh;
+    max-height: 90vh;
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(66, 134, 244, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.bracket-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    gap: 80px;
+    padding: 40px;
+    min-width: fit-content;
+    transform-origin: top left;
+    transition: transform 0.3s ease;
+}
+
+/* Controles de zoom */
+.bracket-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(66, 134, 244, 0.2);
+}
+
+.zoom-button {
+    background: rgba(66, 134, 244, 0.2);
+    border: 1px solid rgba(66, 134, 244, 0.3);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.zoom-button:hover {
+    background: rgba(66, 134, 244, 0.4);
+}
+
+/* Ajustar tamaños para mejor visualización */
+.match-wrapper {
+    min-width: 200px;
+    max-width: 250px;
+    margin: 15px 0;
+}
+
+/* Mejorar scrollbars */
+#bracket-container::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+#bracket-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+}
+
+#bracket-container::-webkit-scrollbar-thumb {
+    background: rgba(66, 134, 244, 0.3);
+    border-radius: 6px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+#bracket-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(66, 134, 244, 0.5);
+}
+
+/* Indicador de scroll */
+.scroll-indicator {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9em;
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#bracket-container:hover .scroll-indicator {
+    opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #bracket-container {
+        padding: 20px 10px;
+    }
+
+    .bracket-wrapper {
+        gap: 40px;
+        padding: 20px;
+    }
+
+    .match-wrapper {
+        min-width: 160px;
+    }
 }
 
 .round {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* Alinear partidas hacia arriba */
-    margin: 0 40px; /* Ajuste de margen entre rondas */
-    flex: 1;
+    justify-content: space-around;
+    position: relative;
+    padding: 20px 0;
+}
+
+.match-wrapper {
+    background: rgba(66, 134, 244, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    width: 220px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    margin: 20px 0;
+    border: 1px solid rgba(66, 134, 244, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.match-wrapper:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(66, 134, 244, 0.15);
+}
+
+/* Líneas conectoras mejoradas */
+.match-wrapper::after {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(to right, #4286f4, rgba(66, 134, 244, 0.3));
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.round:not(:last-child) .match-wrapper::before {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    height: calc(100% + 40px);
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(66, 134, 244, 0.3), #4286f4, rgba(66, 134, 244, 0.3));
+    opacity: 0.5;
+    transform: translateY(-50%);
+    transition: opacity 0.3s ease;
+}
+
+.match-wrapper:hover::after,
+.match-wrapper:hover::before {
+    opacity: 1;
 }
 
 .match {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Alinear hacia arriba */
-    align-items: center;
-    margin: 20px 0; /* Ajuste de margen entre partidos */
-    padding: 10px 0;
+    gap: 15px;
 }
 
-.match .player {
-    background: #000000;
+.player {
+    background: rgba(0, 0, 0, 0.3);
     color: #ffffff;
-    padding: 10px 30px;
-    margin: 5px 0;
-    border-radius: 5px;
-    border: 2px solid #00BFFF;
-    width: 150px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(66, 134, 244, 0.2);
+    width: 100%;
     text-align: center;
-    box-shadow: 0 0 10px #00BFFF;
-    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    font-size: 0.9em;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.player.clickable {
     cursor: pointer;
+    background: rgba(66, 134, 244, 0.1);
 }
 
-.match .vs {
-    color: #00BFFF;
-    font-size: 1.5em;
-    margin: 10px 0;
-    text-shadow: 0 0 10px #00BFFF;
+.player.clickable:hover {
+    transform: scale(1.02);
+    border-color: #4286f4;
+    background: rgba(66, 134, 244, 0.2);
+    box-shadow: 0 0 15px rgba(66, 134, 244, 0.3);
 }
 
-.match .match-label {
-    color: #00BFFF;
+.vs {
+    color: #4286f4;
+    font-size: 1em;
+    text-align: center;
+    opacity: 0.8;
+    text-shadow: 0 0 10px rgba(66, 134, 244, 0.3);
+}
+
+/* Indicadores de ronda */
+.round::before {
+    content: attr(data-round-name);
+    position: absolute;
+    top: -40px;
+    width: 100%;
+    text-align: center;
+    color: #4286f4;
     font-size: 1.2em;
-    margin-bottom: 10px;
-    text-shadow: 0 0 10px #00BFFF;
-    font-weight: bold;
+    opacity: 0.8;
+    text-shadow: 0 0 10px rgba(66, 134, 244, 0.3);
+    transition: all 0.3s ease;
+}
+
+.round:hover::before {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+/* Ajustar espaciado entre rondas */
+.bracket-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    padding: 40px 20px;
+    min-width: fit-content;
+}
+
+/* Eliminar gaps variables y usar espaciado fijo */
+.round[data-round="1"] { gap: 20px; }
+.round[data-round="2"] { gap: 40px; }
+.round[data-round="3"] { gap: 80px; }
+.round[data-round="4"] { gap: 160px; }
+.round[data-round="5"] { gap: 320px; }
+
+/* Scrollbar personalizada */
+#bracket-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+#bracket-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+#bracket-container::-webkit-scrollbar-thumb {
+    background: rgba(66, 134, 244, 0.3);
+    border-radius: 4px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+}
+
+#bracket-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(66, 134, 244, 0.5);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    h1.glow {
+        font-size: 2.5em;
+    }
+
+    .bracket-wrapper {
+        gap: 60px;
+        padding: 20px 10px;
+    }
+
+    .match-wrapper {
+        width: 180px;
+        padding: 15px;
+    }
+
+    .player {
+        font-size: 0.8em;
+        padding: 10px;
+    }
+}
+
+/* Estilos para las partículas */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    background: rgba(66, 134, 244, 0.5);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-20vh) scale(1);
+        opacity: 0;
+    }
 }
