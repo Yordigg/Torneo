@@ -12,18 +12,61 @@
         <header>
             <h1 class="glow">Yordi_gg Stars Cup</h1>
         </header>
-        <section>
-            <div class="tournament-form">
-                <h2>Agregar Participantes</h2>
+        
+        <div class="tournament-form">
+            <div class="input-section">
                 <input type="text" id="player-input" placeholder="Ingresa el nombre de un participante y presiona Enter">
+            </div>
+            
+            <div class="players-section">
+                <div class="players-header">
+                    <h2>Participantes</h2>
+                    <div class="participant-count" id="participant-count">
+                        Participantes añadidos: 0
+                    </div>
+                </div>
+                
                 <div class="players-container" id="players-container">
                     <!-- Los jugadores se añadirán aquí -->
                 </div>
-                <div class="participant-count" id="participant-count">Participantes añadidos: 0</div>
-                <button class="generate-btn" id="generate-tournament-btn">Generar torneo</button>
             </div>
-        </section>
+            
+            <div class="actions-section">
+                <button class="generate-btn" id="generate-tournament-btn">
+                    Generar torneo
+                </button>
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
+    <script>
+    function createParticles() {
+        const particlesContainer = document.createElement('div');
+        particlesContainer.className = 'particles';
+        document.body.appendChild(particlesContainer);
+
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // Posición inicial aleatoria
+            particle.style.left = `${Math.random() * 100}%`;
+            
+            // Tamaño aleatorio
+            const size = Math.random() * 3 + 1;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // Duración y retraso aleatorios
+            const duration = Math.random() * 10 + 15;
+            const delay = Math.random() * -20;
+            particle.style.animation = `particleFloat ${duration}s ${delay}s infinite linear`;
+            
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    createParticles();
+    </script>
 </body>
 </html>
