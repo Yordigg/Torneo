@@ -5,23 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yordi_gg Stars Cup</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1 class="glow">Yordi_gg Stars Cup</h1>
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h1 class="glow">Yordi_gg Stars Cup</h1>
+            </div>
+            <div class="subtitle">Torneo de Estrellas</div>
         </header>
         
         <div class="tournament-form">
             <div class="input-section">
-                <input type="text" id="player-input" placeholder="Ingresa el nombre de un participante y presiona Enter">
+                <div class="input-wrapper">
+                    <i class="fas fa-user-plus"></i>
+                    <input type="text" id="player-input" placeholder="Ingresa el nombre de un participante y presiona Enter">
+                </div>
             </div>
             
             <div class="players-section">
                 <div class="players-header">
-                    <h2>Participantes</h2>
+                    <h2><i class="fas fa-users"></i> Participantes</h2>
                     <div class="participant-count" id="participant-count">
+                        <i class="fas fa-user-check"></i>
                         Participantes añadidos: 0
                     </div>
                 </div>
@@ -33,6 +44,7 @@
             
             <div class="actions-section">
                 <button class="generate-btn" id="generate-tournament-btn">
+                    <i class="fas fa-play"></i>
                     Generar torneo
                 </button>
             </div>
