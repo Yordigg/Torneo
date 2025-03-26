@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     localStorage.setItem('tournamentRounds', JSON.stringify(rounds));
     displayBracket(rounds, document.getElementById('bracket-container'));
+    initializeParticipantsList(players);
 });
 
 function shuffleArray(array) {
@@ -139,17 +140,22 @@ function displayBracket(rounds, container) {
             const player1Clickable = player1 !== 'BYE' && player1 !== '-----';
             const player2Clickable = player2 !== 'BYE' && player2 !== '-----';
 
+            // Solo mostrar el botón de deshacer a partir de la segunda ronda
+            const showUndoButton = roundIndex > 0;
+
             const matchWrapper = document.createElement('div');
             matchWrapper.className = 'match-wrapper';
             matchWrapper.innerHTML = `
                 <div class="player ${player1Clickable ? 'clickable' : ''}" 
                      ${player1Clickable ? `onclick="selectWinner(${roundIndex}, ${matchIndex}, 0)"` : ''}>
                     ${player1}
+                    ${player1Clickable && showUndoButton ? `<button class="undo-btn" onclick="undoWinner(${roundIndex}, ${matchIndex}, 0)"><i class="fas fa-undo"></i></button>` : ''}
                 </div>
                 <div class="vs">VS</div>
                 <div class="player ${player2Clickable ? 'clickable' : ''}"
                      ${player2Clickable ? `onclick="selectWinner(${roundIndex}, ${matchIndex}, 1)"` : ''}>
                     ${player2}
+                    ${player2Clickable && showUndoButton ? `<button class="undo-btn" onclick="undoWinner(${roundIndex}, ${matchIndex}, 1)"><i class="fas fa-undo"></i></button>` : ''}
                 </div>
             `;
 
@@ -181,12 +187,53 @@ function getRoundNames(totalRounds) {
     return names;
 }
 
+function initializeParticipantsList(players) {
+    const participantsList = document.getElementById('participants-list');
+    participantsList.innerHTML = '';
+    
+    players.forEach(player => {
+        const participantItem = document.createElement('div');
+        participantItem.className = 'participant-item';
+        participantItem.innerHTML = `
+            <span>${player}</span>
+            <i class="fas fa-user"></i>
+        `;
+        participantsList.appendChild(participantItem);
+    });
+}
+
+function updateParticipantStatus(player, isEliminated) {
+    const participantsList = document.getElementById('participants-list');
+    const participantItems = participantsList.querySelectorAll('.participant-item');
+    
+    participantItems.forEach(item => {
+        if (item.querySelector('span').textContent === player) {
+            if (isEliminated) {
+                item.classList.add('eliminated');
+                item.querySelector('i').className = 'fas fa-times-circle';
+            } else {
+                item.classList.add('active');
+                item.querySelector('i').className = 'fas fa-check-circle';
+            }
+        }
+    });
+}
+
 function selectWinner(roundIndex, matchIndex, playerIndex) {
     const rounds = JSON.parse(localStorage.getItem('tournamentRounds'));
     const currentMatch = rounds[roundIndex][matchIndex];
     const winner = currentMatch[playerIndex];
 
     if (!winner || winner === 'BYE' || winner === '-----') return;
+
+    // Marcar al perdedor como eliminado
+    const loser = currentMatch[1 - playerIndex];
+    if (loser && loser !== 'BYE' && loser !== '-----') {
+        updateParticipantStatus(loser, true);
+    }
+
+    // Marcar al ganador como activo
+    updateParticipantStatus(winner, false);
 
     if (roundIndex + 1 < rounds.length) {
         if (roundIndex === 0 && rounds.length > 2) {
@@ -217,4 +264,64 @@ function selectWinner(roundIndex, matchIndex, playerIndex) {
 
     localStorage.setItem('tournamentRounds', JSON.stringify(rounds));
     displayBracket(rounds, document.getElementById('bracket-container'));
+}
+
+function undoWinner(roundIndex, matchIndex, playerIndex) {
+    const rounds = JSON.parse(localStorage.getItem('tournamentRounds'));
+    const currentMatch = rounds[roundIndex][matchIndex];
+    
+    // Si el jugador actual es el ganador, lo deshacemos
+    if (currentMatch[playerIndex] !== null && currentMatch[playerIndex] !== 'BYE' && currentMatch[playerIndex] !== '-----') {
+        const winner = currentMatch[playerIndex];
+        const loser = currentMatch[1 - playerIndex];
+        
+        // Restaurar el estado de los jugadores
+        if (loser && loser !== 'BYE' && loser !== '-----') {
+            const participantItems = document.querySelectorAll('.participant-item');
+            participantItems.forEach(item => {
+                if (item.querySelector('span').textContent === loser) {
+                    item.classList.remove('eliminated');
+                    item.querySelector('i').className = 'fas fa-user';
+                }
+            });
+        }
+        
+        if (winner) {
+            const participantItems = document.querySelectorAll('.participant-item');
+            participantItems.forEach(item => {
+                if (item.querySelector('span').textContent === winner) {
+                    item.classList.remove('active');
+                    item.querySelector('i').className = 'fas fa-user';
+                }
+            });
+        }
+        
+        // Limpiar el ganador en la ronda actual
+        currentMatch[playerIndex] = null;
+        
+        // Limpiar todos los ganadores en las rondas siguientes
+        for (let r = roundIndex + 1; r < rounds.length; r++) {
+            const nextMatchIndex = Math.floor(matchIndex / Math.pow(2, r - roundIndex));
+            const nextSlotIndex = Math.floor((matchIndex % Math.pow(2, r - roundIndex)) / Math.pow(2, r - roundIndex - 1));
+            
+            if (rounds[r][nextMatchIndex]) {
+                const nextWinner = rounds[r][nextMatchIndex][nextSlotIndex];
+                rounds[r][nextMatchIndex][nextSlotIndex] = null;
+                
+                // Restaurar el estado de los jugadores en las rondas siguientes
+                if (nextWinner) {
+                    const participantItems = document.querySelectorAll('.participant-item');
+                    participantItems.forEach(item => {
+                        if (item.querySelector('span').textContent === nextWinner) {
+                            item.classList.remove('active', 'eliminated');
+                            item.querySelector('i').className = 'fas fa-user';
+                        }
+                    });
+                }
+            }
+        }
+        
+        localStorage.setItem('tournamentRounds', JSON.stringify(rounds));
+        displayBracket(rounds, document.getElementById('bracket-container'));
+    }
 }
