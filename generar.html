@@ -13,21 +13,29 @@
         <header>
             <h1 class="glow">Yordi_gg Stars Cup - Bracket</h1>
         </header>
-        <section id="bracket-container">
-            <!-- El bracket se generará aquí -->
-            <div class="bracket-controls">
-                <button class="zoom-button" onclick="zoomBracket('in')">
-                    <i class="fas fa-search-plus"></i>
-                </button>
-                <button class="zoom-button" onclick="zoomBracket('out')">
-                    <i class="fas fa-search-minus"></i>
-                </button>
-                <button class="zoom-button" onclick="zoomBracket('reset')">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
+        <div class="main-content">
+            <div class="participants-panel">
+                <h2>Participantes</h2>
+                <div class="participants-list" id="participants-list">
+                    <!-- Los participantes se mostrarán aquí -->
+                </div>
             </div>
-            <div class="scroll-indicator">Desplázate para ver más →</div>
-        </section>
+            <section id="bracket-container">
+                <!-- El bracket se generará aquí -->
+                <div class="bracket-controls">
+                    <button class="zoom-button" onclick="zoomBracket('in')">
+                        <i class="fas fa-search-plus"></i>
+                    </button>
+                    <button class="zoom-button" onclick="zoomBracket('out')">
+                        <i class="fas fa-search-minus"></i>
+                    </button>
+                    <button class="zoom-button" onclick="zoomBracket('reset')">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                <div class="scroll-indicator">Desplázate para ver más →</div>
+            </section>
+        </div>
     </div>
     <script src="bracket.js"></script>
     <script>
