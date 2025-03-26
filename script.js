@@ -90,3 +90,65 @@ function updateParticipantCount() {
     const count = playersContainer.children.length;
     participantCount.textContent = `Participantes añadidos: ${count}`;
 }
+
+function handlePlayerClick(player, match) {
+    if (!player || !match) return;
+    
+    // Verificar si el jugador ya avanzó a la siguiente ronda
+    if (player.dataset.advanced === 'true') {
+        return; // Si ya avanzó, no permitir seleccionarlo
+    }
+    
+    const currentRound = match.closest('.round');
+    const nextRound = currentRound.nextElementSibling;
+    
+    if (!nextRound) return;
+    
+    const nextMatch = nextRound.querySelector('.match-wrapper');
+    if (!nextMatch) return;
+    
+    const nextPlayer = nextMatch.querySelector('.player:not(.filled)');
+    if (!nextPlayer) return;
+    
+    // Marcar el jugador como avanzado
+    player.dataset.advanced = 'true';
+    
+    // Copiar el nombre del jugador
+    nextPlayer.textContent = player.textContent;
+    nextPlayer.classList.add('filled');
+    
+    // Marcar el jugador actual como seleccionado
+    player.classList.add('selected');
+    
+    // Guardar el movimiento para poder deshacerlo
+    lastMove = {
+        player: player,
+        nextPlayer: nextPlayer,
+        match: match
+    };
+    
+    // Actualizar el estado de los participantes
+    updateParticipantsState();
+}
+
+function undoLastMove() {
+    if (!lastMove) return;
+    
+    const { player, nextPlayer, match } = lastMove;
+    
+    // Limpiar el jugador en la siguiente ronda
+    nextPlayer.textContent = '';
+    nextPlayer.classList.remove('filled');
+    
+    // Desmarcar el jugador actual como seleccionado
+    player.classList.remove('selected');
+    
+    // Marcar el jugador como no avanzado
+    player.dataset.advanced = 'false';
+    
+    // Limpiar el último movimiento
+    lastMove = null;
+    
+    // Actualizar el estado de los participantes
+    updateParticipantsState();
+}
